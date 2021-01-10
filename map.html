@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+
+
+<script>
+  let map = new Map();
+  let objs = [
+  {name: 'eddie', age: 25},
+  {name: 'max', age: 28},
+  {name: 'windy', age: 20},
+  ]
+  objs.forEach(item =>{
+    map.set(item, item.age) 
+  })
+  
+
+  // let a = [];
+  // a = map.get(obj);
+  map.forEach((val, key) => {
+    console.log(key);
+    console.log(val);
+  })
+
+  for (let [key, val] of map) {
+    console.log(key);
+    console.log(val);
+  }
+
+  for (let key of map.keys()) {
+    console.log(key);
+  }
+
+  for (let value of map.values()) {
+    console.log(value);
+  }
+
+  for (let [key, value] of map.entries()) {
+    console.log(key, value);
+  }
+  console.log(map);  
+</script>  
+</body>
+</html>

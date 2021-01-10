@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  https://www.youtube.com/watch?v=K1PuOTnZwz4&list=PL9nxfq1tlKKn96qqvz92I-09Qg21F12c2&index=27
+  <script>
+    let obj = {}
+    let newVal = ""
+    Object.defineProperty(obj,'name' ,{
+      get () {
+        console.log('get')
+        return 'aaaa'
+      },
+      set (val) {
+        console.log('set');
+        newVal = val
+      }
+    })
+
+    //es6
+    let arr = [1, 2, 3]
+    arr = new Proxy(arr, {
+      get (target, prop) {
+        console.log(target, prop);
+        return prop in target ? target[prop] : 'error'
+      },
+      set (target, prop, val) {
+        if (typeof val === 'number') {
+          target[prop] = val
+          return true
+        } else {
+          return false
+        }
+      }
+    })
+
+    let range = {
+      start: 1,
+      end: 5
+    }
+    range = new Proxy(range, {
+      has (target, prop) {
+        return prop >= target.start && prop <= target.end
+      }
+    })
+
+    console.log(arr[1]);
+  </script>
+</body>
+</html>

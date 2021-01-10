@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let s1 = Symbol('foo')
+    const obj = {
+      name: 'imooc',
+      toString () {
+        return this.name
+      }
+    }
+    let s = Symbol.for(obj)
+    let s2 = Symbol(obj)
+    console.log(Symbol.keyFor(s));
+  </script>
+</body>
+</html>

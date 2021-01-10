@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let arr = [1,2,3,2]
+    let s = new Set(arr); //set是唯一值
+    console.log(s);
+    for(let [item] of s.entries()) {
+      console.log(item);
+    }
+
+    for(let item of s.keys()) {
+      console.log(item);
+    }
+
+    for(let item of s.values()) {
+      console.log(item);
+    }
+
+    console.log([...s])
+
+    let arr1 = [1,2,3,5,6,9]
+    let arr2 = [3,5,6,9,11,55]
+    //合併去重
+    let s1 = new Set([...arr1,...arr2]);
+    console.log([...s1]);
+
+    //找交集
+    let s2 = new Set(arr2)
+    let result = new Set(arr1.filter(item => s2.has(item)));
+    console.log(result);
+
+    //找叉集
+    let s3 = new Set(arr1)
+    let arr3 = new Set(arr1.filter(item => !s2.has(item)))
+    let arr4 = new Set(arr2.filter(item => !s3.has(item)))
+    result = new Set([...arr3,...arr4]);
+    console.log(result);
+
+    //
+
+
+
+  </script>
+</body>
+</html>
