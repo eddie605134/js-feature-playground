@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //深拷貝雨淺拷貝
+    let target = 
+    {
+      a: {
+        b:{
+          c:1
+        },
+        d:2,
+        e:3,
+        f:4
+      }
+    }
+
+    let source = 
+    {
+      a: {
+        b:{
+          c:1
+        },
+        d:2,
+        e:3
+      }
+    }
+
+    Object.assign(target, source); // 只是改變引用位置，無法深拷貝
+
+    //Object深拷貝
+    let obj1 = {
+      name: 'eddie',
+      age: 18
+    }
+    // 方式一 先JSON.stringify，再JSON.parse
+    let obj2 = JSON.parse(JSON.stringify(obj1))
+    obj2.age = 20
+
+
+
+
+    // 方式二 自訂義函數
+    let checkType = data => {
+      return Object.prototype.toString.call(data).slice(8, -1)
+    }
+    
+    let deepClone = target => {
+      let targetType = checkType(target)
+      let result
+      if (targetType === 'Object') {
+        result = {}
+      } else if (targetType === 'Array') {
+        result = []
+      } else {
+        result = target
+      }
+      for(let i in target) {
+        let value = target[i]
+        let valueType = checkType(value)
+        if (valueType === 'Object' || valueType === 'Array') {
+          result[i] = deepClone(value)
+        } else {
+          result[i] = value
+        }
+      }
+      return result
+    }
+
+    let obj3 = {
+      name: 'eddie', 
+      hobby: ['eating']
+    }
+    let obj4 = deepClone(obj3)
+
+    obj4.hobby[0] = 'sleeping'
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <button id="button">點我</button>
+
+  <!-- <script type="module" src="./app.js"></script> -->
+  <script type="module">
+    // import abc from './module.js' 
+    let btn = document.querySelector('#button')
+    btn.addEventListener("click", function(e) {
+      import('./module.js').then(mod=> {
+        
+        mod.default.ajax('https://eddie605134.github.io/romon30/resume.json', res=> {
+          console.log(res)
+        })
+      })
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 1. JS是單線呈
+    console.log(1)
+    setTimeout(()=> {
+      console.log(2)
+    },0)//最小時間不是0，而是4毫秒
+    console.log(3)
+    // 順序 1. 3 .2
+    //js 會先把函式分成同步與異步，同步先執行完再把異步裡事件堆列(event table => event queue)裡的任務加入主線裡執行
+    //若同步主線呈任務執行五秒，異步任務兩秒後執行， JS會先將5秒的同步執行完再執行異步
+
+    //2. Ajax原理
+    function ajax (url, callback) {
+      // var url = 'https://eddie605134.github.io/romon30/resume.json'
+      var url = url
+      var xmlhttp
+      if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+      } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      //2.發送請求
+      xmlhttp.open('get', url, true)
+      xmlhttp.send() 
+
+      //3. 服務端響應
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          var obj = JSON.parse(xmlhttp.responseText);
+          callback(obj);
+        }
+      }
+    }
+    
+    ajax('https://eddie605134.github.io/romon30/resume.json', res => {
+      console.log(res);
+    })
+
+    //call hell
+    ajax('json/a.json', res=> {
+      console.log(res);
+      ajax('json/b.json', res=> {
+        console.log(res);
+        ajax('json/c.json', res=> {
+          console.log(res);
+        })
+      })
+    })
+
+
+  </script>
+</body>
+</html>

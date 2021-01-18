@@ -27,6 +27,63 @@
     console.log(`我是${name}，今年${age}歲`)
     console.log(a.repeat(5))
 
+    //padStart End
+    const tel = '123456789'
+    const newTel = tel.slice(-4).padStart(tel.length, '*')
+    console.log(newTel);
+
+    console.log(new Date().getTime()) //13位
+    //timeStamp.padEnd(13,'0') 補0
+
+
+
+    // ES10matchAll
+    const str = `
+      <div>第一個div</div>
+        <p>123132123</p>
+      <div>第二個div</div>
+    `;
+
+    // function selectDiv (reg, str) {
+    //   let matches = []
+    //   while (true) {
+    //     const match = reg.exec(str)
+    //     if (match == null) {
+    //       break
+    //     }
+    //     matches.push(match[1])
+    //   }
+    //   return matches
+    // }
+
+    // const reg = /<div>(.*)<\/div>/g
+    // const res = selectDiv(reg, str);
+    // console.log(res);
+
+
+    // function selectDiv (reg, str) {
+    //   let matches = []
+    //   str.replace(reg, (all, first)=> {
+    //     matches.push(first)
+    //   })
+    //   return matches
+    // }
+
+    // const reg = /<div>(.*)<\/div>/g
+    // const res = selectDiv(reg, str);
+    // console.log(res);
+
+    function selectDiv (reg, str) {
+      let matches = []
+      for (let match of str.matchAll(reg)) { //str.matchAll 會過正則匹配全部項目，產生跌代器
+        matches.push(match[1])
+      }
+      return matches
+    }
+
+    const reg = /<div>(.*)<\/div>/g
+    const res = selectDiv(reg, str);
+    console.log(res);
   </script>
 </body>
 </html>

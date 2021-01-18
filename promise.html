@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //promise 強在狀態管理
+    // let p = new Promise((resolve, reject) => {
+    //   setTimeout(()=> {
+    //     console.log(123);
+    //     resolve('成功') //手動調用
+    //   },1000)
+    // }).then((res)=> {
+    //   console.log(res);
+    // }, (err)=> {
+    //   console.log(err)//第二個可省略
+    // })
+
+    // 會先執行內部不會延遲
+    let p2 = new Promise((resolve, reject) => {
+      console.log(123)
+    })
+    console.log(456)
+    p2.then(res=> {
+      console.log(789);
+    })
+
+    //Promise 是不可逆的
+    let p3 = new Promise((resolve, reject) => {
+      resolve() //若先執行resolve，reject不會執行
+      reject()
+    })
+    p3.then((res)=> {
+      console.log(1);
+    },() => {
+      console.log(2);
+
+    })
+
+    //用 promise改造
+
+    function ajax (url, callbackS, callbackF) {
+      // var url = 'https://eddie605134.github.io/romon30/resume.json'
+      var url = url
+      var xmlhttp
+      if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+      } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      //2.發送請求
+      xmlhttp.open('get', url, true)
+      xmlhttp.send() 
+
+      //3. 服務端響應
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          var obj = JSON.parse(xmlhttp.responseText);
+          callbackS && callbackS(obj);
+        } else if (xmlhttp.readyState == 4 && xmlhttp.status == 404) {
+          callbackF && callbackS(xmlhttp.statusText)
+        }
+      }
+    }
+    
+    ajax('https://eddie605134.github.io/romon30/resume.json', res => {
+      console.log(res);
+    })
+
+    function getPromise(url) {
+      return new Promise((resolve, reject) => {
+        ajax(url, res=> {
+          resolve(res)
+        },err => {
+          reject(err)
+        })
+      })
+    }
+
+    getPromise('json/a.json')
+    .then(res=> {
+      console.log(res)
+      return getPromise('json/b.json')
+    }).then(res => {
+      console.log(res);
+      return getPromise('json/c.json')
+    }).then(res=> {
+      console.log(res);
+    }).catch(err=> {
+      console.log(err); //統一處理
+    })
+
+    //靜態方法
+
+    function foo (flag) {
+      if (flag) {
+        return new Promise((resolve, reject) => {
+          resolve('success');
+        })
+      } else {
+        //return 'fall' // 會失敗，因為不能用then
+        return Promise.resolve('fail')
+        // return Promise.reject('fail')
+        
+      }
+    }
+
+    foo(false).then(res=> {
+      console.log(res)
+    })
+    .catch()
+    .finally(() => {
+      // 不管成功或失敗都會掉用此方法
+    })
+/*
+    Promise.all() // 如果裏頭有一個失敗reject 就reject 參數是promise Arr
+    Promise.race() // 如果裏頭有一個失敗resolve 就rejectresolve 參數是promise Arr
+*/
+    //Promise
+    Promise.allSettled([
+      Promise.resolve({
+        code: 200,
+        data: [1,2,3]
+      }),
+      Promise.resolve({
+        code: 200,
+        data: [1,2,3]
+      }),
+      Promise.resolve({
+        code: 200,
+        data: [1,2,3],
+      })
+    ]).then(res=> {
+      const data = res.filter(item => item.status == 'fulfilled')
+      console.log(res);
+    }).catch(err=> {
+      console.log(err);
+    })
+  </script>
+</body>
+</html>

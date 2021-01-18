@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let obj1 = {name: 'foo', age: 18}
+    let obj2 = {school: '213132132'}
+
+    let obj3 = {...obj1} //深拷貝
+    obj1.age = 19
+    console.log(obj3);
+
+
+    //合併OBJ
+    let obj4 = {...obj1, ...obj2}
+    const {name,...rest} = obj4 //剩餘只能放在最後
+    console.log(name);
+    console.log(rest.age);
+
+    //Object.fromEntries()
+
+    const obj5 = {
+      name: 'eddie', 
+      age:18
+    }
+    const entries = Object.entries(obj5)
+    console.log(entries);
+
+    const fobj = Object.fromEntries(entries)
+    console.log(fobj);
+
+    // 把map => obj
+    const map = new Map();
+    map.set('name', 'foo')
+    map.set('age', 18)
+    const fromEntries = Object.fromEntries(map);
+    console.log(fromEntries);
+
+    // 取ogj分數
+    const course = {
+      Chinese: 80,
+      English: 85,
+      Math:70,
+    }
+
+    const res =  Object.entries(course).filter(([key, value])=> value >= 80)
+    const newRes = Object.fromEntries(res)
+    console.log(newRes)
+  </script>
+</body>
+</html>

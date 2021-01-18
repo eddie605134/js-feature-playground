@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //同步跌代
+    const arr = ['es6','es7','es8','es9']
+    arr[Symbol.iterator] = function() {
+      let nextIndex = 0
+      return {
+        next () {
+          return nextIndex < arr.length ? {
+            value: arr[nextIndex++],
+            done: false
+          } : {
+            value: undefined,
+            done: true
+          }
+        }
+      }
+    }
+
+    //異步跌代
+    function getPromise (time) {
+      return new Promise((resolve, reject)=> {
+        setTimeout(()=> {
+          resolve({
+            value: time,
+            done: false
+          })
+        },time)
+      })
+    }
+
+    const arra = [getPromise(1000),getPromise(2000),getPromise(3000)]
+
+    arra[Symbol.asyncIterator] = function () {
+      let nextIndex = 0
+      return {
+        next () {
+          return nextIndex < arra.length ? arra[nextIndex++] :
+          Promise.resolve({
+            value: undefined,
+            done: true
+          })
+        }
+      }
+    }
+    async function test () {
+      for await (let item of arra) { //for await(    of )  Promise變成reslove再取下一個，或是一個一部結束在換下一個
+        console.log(item)
+      }
+    }
+    test()
+  </script>
+</body>
+</html>

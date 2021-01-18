@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //默認值
+    function foo(x, y = 'world') {
+      //1.若函數參數已使用默認值，則函數內不可再聲明
+      //ex: let y = 123
+      console.log(x, y);
+    }
+
+    foo(123, 0);
+
+    //2.默認值一定要放後面
+
+    function foo2 (x, y, z = 5) {
+      console.log(x, y, z);
+    }
+
+    foo2(1, 2)
+
+    //3.對象解構附值時，形態要完全匹配
+    function foo3 ({x, y=5}) {
+      console.log(x, y);
+    }
+    foo3({})
+
+    //4.ajax
+    function ajax (url, {
+      body='',
+      method='GET',
+      headers={},
+    } = {}) {
+      console.log(method);
+    }
+
+    ajax('http://eddie.com',{method:'POST'})
+
+    //5.length 能指定到函數中沒有默認值的參數個數
+
+    function len (x, y, z) {
+      console.log(x);
+    }
+    console.log(len.length);
+
+    //6.參數作用域
+    let r = 1
+
+    function area (x, r=x) {
+      console.log(r);
+    }
+    area(2);
+
+    function area2 (x=r) {
+      //若此時外部無r，則報錯
+      let r = 2
+      console.log(x);
+    }
+    area2();
+
+    //7. 函數name
+
+    function nameTest(x, y) {
+      console.log(this, x, y);
+    }
+
+    console.log((new Function).name); // anonymous => 匿名函數
+
+    nameTest.bind({name: 'eddie'})(1, 2) //第一參數為此方法this指向誰
+    console.log(nameTest.bind({}).name);
+  </script>
+</body>
+</html>

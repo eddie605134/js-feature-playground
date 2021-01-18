@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="">
+</head>
+<body>
+  <script type="module" src="./app.js"></script>
+  <script>
+    
+    let obj = {};
+    obj.name = 123
+
+    //ES5父
+    function Animal (name) {
+      this.name = name
+    }
+    Animal.prototype.showName = function () {
+      console.log('我的名字是' + this.name)
+    }
+    //ES5子
+    function Dog (name, color) {
+      Animal.call(this, name)//繼承animal
+      this.color = color
+    }
+    Dog.prototype = new Animal()
+    Dog.prototype.constuctor = Dog 
+
+    //ES6 父
+
+    class People {
+      constructor (name, age) {
+        this.name = name
+        this.age = age
+        this._sex = ''
+      }
+      get sex () {//取值時
+        if(this._sex == 1) {
+          return 'male'
+        } else if (this._sex == 0) {
+          return 'female'
+        }
+        
+      }
+      set sex (val) {//設值時
+        if (val == 1 || val == 0) {
+          this._sex = val
+        }
+        
+      }
+      static showName (name, age) { // 靜態方法
+        console.log(`我的名字是${name}`)
+      }
+      showName () { // 實例方法
+        console.log(this.name)
+      }
+    }
+    let eddie = new People
+    eddie.sex = 1
+    console.log(eddie.sex);
+
+    //ES6 子
+
+    class Coder extends People { //可直接繼承父的頂層屬性 get set static(但不能在實例方法被調用) 實例方法
+      constructor (name, age, company) {
+        super (name, age) // 繼承父類的函數
+        this.company = company
+      }
+      showCompany () {
+        console.log(this.company)
+      }
+    }
+
+    let c1 = new Coder('eddie',18,'皇鼎')
+
+    c1.showName();
+    c1.showCompany();
+    Coder.showName('peter');
+
+    //es6 class 靜態屬性設置
+
+    Coder.bird = '18/5'
+    console.log(Coder.bird)
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 自己製作generator
+    function makeIter (arr) {
+      let nextIndex = 0
+      return {
+        next () {
+          return nextIndex < arr.length ? {
+            value: arr[nextIndex++],
+            done: false
+          } : {
+            value: undefined,
+            done: true
+          }
+        }
+      }
+    }
+
+    let arr = ['a', 'b', 'c']
+    let it = makeIter(arr)
+    console.log(it.next());
+    console.log(it.next());
+
+    // 不可便利結構
+
+    let courses = {
+      allCourse: {
+        frontend: ['ES', '小程序', 'vue', 'react'],
+        backend: ['Java', 'python'],
+        webapp: ['Android', 'IOS'],
+      }
+    }
+    let it2 = arr[Symbol.iterator]()
+    console.log(it2.next());
+
+    /*
+    array map set string typedarray nodelist  iterator皆具有接口
+    */
+
+    //可跌代協議，Symbol.iterator
+    //跌代器協議 return {next(){ return {value, done}}}
+
+
+    // 非generator實現方式
+    // courses[Symbol.iterator] = function () {
+    //   let allCourse = this.allCourse;
+    //   let keys = Reflect.ownKeys(allCourse)
+    //   let val = []
+    //   return {
+    //     next () {
+    //       if (!val.length) {
+    //         if (keys.length ) {
+    //           val = allCourse[keys[0]]
+    //           keys.shift()
+    //         }
+    //       }
+    //       return {
+    //         done: !val.length,
+    //         value: val.shift()
+    //       }
+    //     }
+    //   }
+    // }
+
+    // generator實現方式
+
+    courses[Symbol.iterator] = function* () {
+      let allCourse = this.allCourse;
+      let keys = Reflect.ownKeys(allCourse)
+      let val = []
+      while (1) {
+        if (!val.length) {
+          if (keys.length ) {
+            val = allCourse[keys[0]]
+            yield keys.shift()
+          } else {
+            return false
+          }
+        } else {
+          yield val.shift()
+        }
+      }
+    }
+
+    for (let c of courses) {
+      console.log(c)
+    }
+  </script>
+</body>
+</html>
